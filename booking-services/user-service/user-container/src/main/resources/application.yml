@@ -1,0 +1,21 @@
+server:
+  port: 8082
+
+user-service:
+  database:
+    mongo:
+      host: localhost
+      port: 27017
+
+spring:
+  application:
+    name: user-service
+  data:
+    mongodb:
+      host: ${user-service.database.mongo.host}
+      port: ${user-service.database.mongo.port}
+      database: UserService
+  cloud:
+    gcp:
+      credentials:
+        location: classpath:gcp-account-file.json

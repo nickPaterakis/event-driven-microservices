@@ -1,0 +1,17 @@
+.idea
+
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/java/resources/gcp-account-file.json
+target/
+
+diagrams
+booking-base
+booking-services/notification-service
+infrastructure/docker/volumes
+infrastructure/docker/debezium-strimzi
+infrastructure/docker/kong
+infrastructure/docker
+infrastructure/custom-debezium-transformer
+infrastructure/kong
+
+.DS_Store

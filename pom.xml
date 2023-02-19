@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.booking</groupId>
+    <artifactId>event-driven-booking</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>event-driven-booking</name>
+    <description>Event driven microservices</description>
+    <packaging>pom</packaging>
+
+    <parent>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <version>2.6.3</version>
+        <relativePath/>
+    </parent>
+
+    <developers>
+        <developer>
+            <id>0001</id>
+            <name>Nicholas Paterakis</name>
+            <email>nikolas.paterakis@gmail.com</email>
+            <roles>
+                <role>
+                    Software Engineer
+                </role>
+            </roles>
+        </developer>
+    </developers>
+
+    <properties>
+        <java.version>11</java.version>
+        <spring-kafka.version>2.8.2</spring-kafka.version>
+        <maven.compiler.plugin.version>3.9.0</maven.compiler.plugin.version>
+        <spring-kafka.version>2.8.2</spring-kafka.version>
+        <maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
+        <docker.image.dockerfile.dir>${basedir}</docker.image.dockerfile.dir>
+        <docker.image.prefix>nicholaspat</docker.image.prefix>
+        <maintainer.name>Nicholas Paterakis</maintainer.name>
+        <maintainer.email>nikolas.paterakis@gmail.com</maintainer.email>
+        <docker.image.exposed.port>9090</docker.image.exposed.port>
+        <docker.image.default.tag>latest</docker.image.default.tag>
+        <docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>
+        <docker.plugin.version>1.2.0</docker.plugin.version>
+        <maven.plugin.dockerfile.version>1.4.13</maven.plugin.dockerfile.version>
+        <org.lombok.version>1.18.12</org.lombok.version>
+    </properties>
+
+    <modules>
+        <module>booking-base/booking-build-chassis</module>
+        <module>booking-base/booking-service-chassis</module>
+        <module>booking-services/property-service</module>
+        <module>booking-services/reservation-service</module>
+        <module>booking-services/user-service</module>
+        <module>booking-services/notification-service</module>
+        <module>infrastructure</module>
+        <module>common</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>kafka</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>reservation-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>reservation-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>reservation-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>reservation-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>reservation-data</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>user-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>user-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>user-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>user-container</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>user-data</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>user-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>common-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>common-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.booking</groupId>
+                <artifactId>custom-debezium-transformer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <release>11</release>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
