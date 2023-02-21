@@ -1,7 +1,8 @@
 # Event Driven Microservices <img alt="GitHub" src="https://img.shields.io/github/license/nickPaterakis/Booking-Microservices">
+The event-driven-microservices project demonstrates the patterns that event-driven applications need. The patterns that has been implamented in the project are the Database per Service pattern, the Choreography-based Saga pattern, the CQRS pattern, the Domain event pattern, the Messaging pattern, the two ways that you can implement the Outbox pattern (log tailling, polling publisher), and the API gateway pattern.
+# Architecture
 
-# System Overview
-![system](https://user-images.githubusercontent.com/36018286/219954406-32699881-9994-4af7-a209-37139ca58786.png)
+![system (2)](https://user-images.githubusercontent.com/36018286/220418208-e58ee456-fc01-424e-967e-d4c7785b5581.png)
 
 # Communication
 
