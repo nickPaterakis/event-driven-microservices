@@ -3,8 +3,7 @@ The event-driven-microservices project demonstrates the patterns that event-driv
 
 The technologies that the application uses: **Java 11, Spring Boot, Maven, Kafka, MongoDB, Docker, Debezium, Kong**.
 # Architecture
-
-![system (2)](https://user-images.githubusercontent.com/36018286/220418208-e58ee456-fc01-424e-967e-d4c7785b5581.png)
+![architecture](https://user-images.githubusercontent.com/36018286/221354604-b56cd893-d141-4bcb-9f1b-03a45e9950d5.png)
 
 # Communication
 
