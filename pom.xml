@@ -51,10 +51,10 @@
     <modules>
         <module>booking-base/booking-build-chassis</module>
         <module>booking-base/booking-service-chassis</module>
-        <module>booking-services/property-service</module>
-        <module>booking-services/reservation-service</module>
-        <module>booking-services/user-service</module>
-        <module>booking-services/notification-service</module>
+        <module>services/property-service</module>
+        <module>services/reservation-service</module>
+        <module>services/user-service</module>
+        <module>services/notification-service</module>
         <module>infrastructure</module>
         <module>common</module>
     </modules>
@@ -118,22 +118,12 @@
             </dependency>
             <dependency>
                 <groupId>com.booking</groupId>
-                <artifactId>user-messaging</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.booking</groupId>
                 <artifactId>common-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.booking</groupId>
                 <artifactId>common-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.booking</groupId>
-                <artifactId>custom-debezium-transformer</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

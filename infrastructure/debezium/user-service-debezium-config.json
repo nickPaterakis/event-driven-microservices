@@ -1,0 +1,24 @@
+{
+  "name": "user-service-debezium-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
+    "tasks.max": "1",
+    "topic.prefix": "booking",
+    "mongodb.hosts": "debezium/mongo:27017",
+    "mongodb.user": "admin",
+    "mongodb.password": "admin",
+    "database.include.list": "UserService",
+    "collection.include.list": "UserService.outboxevent",
+    "database.history.kafka.bootstrap.servers": "kafka:9092",
+    "transforms": "outbox",
+    "transforms.outbox.type": "io.debezium.connector.mongodb.transforms.outbox.MongoEventRouter",
+    "transforms.outbox.collection.field.event.key": "aggregateId",
+    "transforms.outbox.collection.field.event.payload": "payload",
+    "transforms.outbox.route.topic.replacement": "Booking.${routedByValue}",
+    "transforms.outbox.collection.expand.json.payload": "true",
+    "transforms.outbox.route.by.field": "aggregateType",
+    "transforms.outbox.collection.fields.additional.placement": "type:header:eventType",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter"
+  }
+}

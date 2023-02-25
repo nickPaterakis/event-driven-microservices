@@ -1,0 +1,153 @@
+version: '3.7'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - "./volumes/zookeeper/data:/var/lib/zookeeper/data"
+      - "./volumes/zookeeper/transactions:/var/lib/zookeeper/log"
+    networks:
+      - my-network
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka
+    hostname: kafka
+    ports:
+      - 9092:9092
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_HOST://kafka:29092
+      LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    volumes:
+      - "./volumes/kafka:/var/lib/kafka/data"
+    networks:
+      - my-network
+  init-kafka:
+    container_name: init-kafka
+    image: confluentinc/cp-kafka
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      "
+      # block until kafka is reachable
+      kafka-topics --bootstrap-server kafka:29092 --list
+      
+      echo -e 'Deleting kafka topics'
+      kafka-topics --bootstrap-server kafka:29092 --topic Booking.User_Service.User --delete --if-exists
+      kafka-topics --bootstrap-server kafka:29092 --topic Booking.Reservation_Service.Reservation --delete --if-exists
+      kafka-topics --bootstrap-server kafka:29092 --topic Booking.Property_Service.Property --delete --if-exists
+      
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic Booking.User_Service.User  --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic Booking.Reservation_Service.Reservation  --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic Booking.Property_Service.Property --replication-factor 1 --partitions 1
+      
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka:29092 --list
+      "
+    networks:
+      - my-network
+    depends_on:
+      - kafka
+  debezium-connect:
+    container_name: debezium-connect
+    image: debezium/connect
+    hostname: debezium-connect
+    ports:
+      - "8083:8083"
+    links:
+      - kafka
+      - mongo
+    depends_on:
+      - kafka
+      - mongo
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:29092
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_connect_statuses
+    networks:
+      - my-network
+  mongo:
+    container_name: mongo
+    image: mongo
+    command: --replSet debezium
+    ports:
+      - "27017:27017"
+    networks:
+      - my-network
+    volumes:
+      - "./volumes/mongo:/data/db"
+  kong:
+    container_name: kong
+    hostname: kong
+    image: kong:latest
+    environment:
+      - KONG_DATABASE=off
+      - KONG_DECLARATIVE_CONFIG=/opt/kong/kong.yaml
+      - KONG_PROXY_ACCESS_LOG=/dev/stdout
+      - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+      - KONG_PROXY_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+    command: "kong start"
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+      - "8444:8444"
+    networks:
+      - my-network
+    volumes:
+      - ./volumes/kong:/opt/kong
+  property-service:
+    container_name: property-service
+    hostname: property-service
+    image: property-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - my-network
+    depends_on:
+      - mongo
+    ports:
+      - 8088:8088
+  user-service:
+    container_name: user-service
+    hostname: user-service
+    image: user-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - my-network
+    depends_on:
+      - mongo
+    ports:
+      - 8082:8082
+  reservation-service:
+    container_name: reservation-service
+    hostname: reservation-service
+    image: reservation-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - my-network
+    depends_on:
+      - mongo
+    ports:
+      - 8085:8085
+
+networks:
+  my-network:
+
+
