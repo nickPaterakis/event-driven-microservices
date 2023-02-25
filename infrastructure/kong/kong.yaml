@@ -1,0 +1,22 @@
+_format_version: "2.1"
+_transform: true
+
+services:
+  - name: property-service
+    url: http://property-service:8088
+    routes:
+      - name: property-routes
+        paths:
+          - /property-service
+  - name: user-service
+    url: http://user-service:8082
+    routes:
+      - name: user-routes
+        paths:
+          - /user-service
+  - name: reservation-service
+    url: http://reservation-service:8085
+    routes:
+      - name: reservation-routes
+        paths:
+          - /reservation-service
