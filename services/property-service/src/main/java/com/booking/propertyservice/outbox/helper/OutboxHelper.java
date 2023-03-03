@@ -1,6 +1,6 @@
 package com.booking.propertyservice.outbox.helper;
 
-import com.booking.kafka.model.property.PropertyEvent;
+import com.booking.domain.event.property.PropertyEvent;
 import com.booking.propertyservice.model.Property;
 import com.booking.propertyservice.outbox.model.Outbox;
 import com.booking.propertyservice.repository.OutboxRepository;

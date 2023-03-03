@@ -1,7 +1,7 @@
 package com.booking.propertyservice.service.ownerservice;
 
+import com.booking.domain.event.user.UserEvent;
 import com.booking.domain.exception.EntityNotFoundException;
-import com.booking.kafka.model.user.UserEvent;
 import com.booking.propertyservice.repository.OwnerRepository;
 import com.booking.propertyservice.model.Owner;
 import lombok.RequiredArgsConstructor;

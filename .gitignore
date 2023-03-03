@@ -5,7 +5,6 @@
 target/
 
 documents
-booking-base
 services/notification-service
 infrastructure/docker/volumes
 

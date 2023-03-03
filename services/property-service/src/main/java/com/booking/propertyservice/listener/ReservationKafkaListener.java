@@ -1,7 +1,7 @@
 package com.booking.propertyservice.listener;
 
-import com.booking.kafka.model.reservation.ReservationEvent;
-import com.booking.kafka.service.consumer.KafkaConsumer;
+import com.booking.domain.event.reservation.ReservationEvent;
+import com.booking.kafkaconsumer.service.consumer.KafkaConsumer;
 import com.booking.propertyservice.service.reservationservice.ReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

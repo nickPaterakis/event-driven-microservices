@@ -1,7 +1,7 @@
 package com.booking.propertyservice.listener;
 
-import com.booking.kafka.model.user.UserEvent;
-import com.booking.kafka.service.consumer.KafkaConsumer;
+import com.booking.domain.event.user.UserEvent;
+import com.booking.kafkaconsumer.service.consumer.KafkaConsumer;
 import com.booking.propertyservice.service.ownerservice.OwnerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class UserKafkaListener implements KafkaConsumer<UserEvent> {
 
     @KafkaListener(topics = "Booking.User_Service.User",
                    groupId = "property-service-consumer-group",
-                   properties = {"spring.json.value.default.type=com.booking.kafka.model.user.UserEvent"})
+                   properties = {"spring.json.value.default.type=com.booking.domain.event.user.UserEvent"})
     public void receive(@Payload List<UserEvent> messages,
                         @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) List<String> keys,
                         @Header(KafkaHeaders.RECEIVED_PARTITION_ID) List<Integer> partitions,

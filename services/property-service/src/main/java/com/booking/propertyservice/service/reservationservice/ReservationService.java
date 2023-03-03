@@ -1,7 +1,6 @@
 package com.booking.propertyservice.service.reservationservice;
 
-import com.booking.kafka.model.reservation.ReservationEvent;
-import com.booking.propertyservice.model.Reservation;
+import com.booking.domain.event.reservation.ReservationEvent;
 
 public interface ReservationService {
 

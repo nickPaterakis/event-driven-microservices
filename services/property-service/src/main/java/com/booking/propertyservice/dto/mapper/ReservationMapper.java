@@ -1,6 +1,6 @@
 package com.booking.propertyservice.dto.mapper;
 
-import com.booking.kafka.model.reservation.ReservationEvent;
+import com.booking.domain.event.reservation.ReservationEvent;
 import com.booking.propertyservice.model.Reservation;
 import lombok.experimental.UtilityClass;
 

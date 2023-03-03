@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.booking</groupId>
+		<artifactId>booking-build-chassis</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../booking-build-chassis/pom.xml</relativePath>
+	</parent>
+
+	<artifactId>booking-service-chassis</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>booking-service-chassis</name>
+	<description>Parent pom project for Booking Services</description>
+
+    <packaging>pom</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.booking</groupId>
+			<artifactId>common-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.booking</groupId>
+			<artifactId>common-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+	</dependencies>
+</project>

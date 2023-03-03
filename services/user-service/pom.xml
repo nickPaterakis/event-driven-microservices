@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.booking</groupId>
-		<artifactId>event-driven-booking</artifactId>
-		<version>1.0-SNAPSHOT</version>
-	</parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.booking</groupId>
+        <artifactId>booking-service-chassis</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../base/booking-service-chassis/pom.xml</relativePath>
+    </parent>
 
-	<artifactId>user-service</artifactId>
-	<name>user-service</name>
-	<description>Serves the user catalogue</description>
-	<packaging>pom</packaging>
+    <artifactId>user-service</artifactId>
 
-	<modules>
-		<module>user-api</module>
-		<module>user-data</module>
-		<module>user-container</module>
-		<module>user-domain</module>
-	</modules>
-
-	<properties>
-		<docker.exposed.port>8083</docker.exposed.port>
-		<docker.image.dockerfile.dir>${basedir}/../../docker</docker.image.dockerfile.dir>
-	</properties>
-
-	<profiles>
-		<profile>
-			<id>buildDocker</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.spotify</groupId>
-						<artifactId>docker-maven-plugin</artifactId>
-						<version>${docker.plugin.version}</version>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.booking</groupId>
+            <artifactId>common-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.booking</groupId>
+            <artifactId>common-domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>spring-cloud-gcp-starter-storage</artifactId>
+            <version>4.1.1</version>
+        </dependency>
+    </dependencies>
 </project>
