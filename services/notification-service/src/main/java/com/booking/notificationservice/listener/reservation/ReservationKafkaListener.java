@@ -1,5 +1,6 @@
 package com.booking.notificationservice.listener.reservation;
 
+import com.booking.domain.event.reservation.ReservationEvent;
 import com.booking.notificationservice.listener.reservation.helper.ReservationKafkaListenerHelper;
 import com.booking.notificationservice.service.email.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,12 @@ public class ReservationKafkaListener {
                 partition,
                 offset);
 
-        emailService.sendReservationToOwner(reservationKafkaListenerHelper.stringToReservationEvent(message));
+        ReservationEvent reservationEvent = reservationKafkaListenerHelper.stringToReservationEvent(message);
+
+        switch (reservationEvent.getReservationStatus()) {
+            case RESERVED -> emailService.sendReservationToOwner(reservationEvent);
+            case CANCELED -> emailService.sendCanceledReservationToOwner(reservationEvent);
+        }
     }
 }
 

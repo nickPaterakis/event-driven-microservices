@@ -8,6 +8,8 @@ public interface ReservationService {
 
     ReservationDto createReservation(ReservationDto reservationDto);
 
+    void cancelReservation(String reservationId);
+
     Set<ReservationDto> getReservationsByRenterId(String renterId);
 
     void deleteReservationsByPropertyId(String propertyId);

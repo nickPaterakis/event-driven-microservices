@@ -26,12 +26,21 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     @Override
     public Set<Reservation> findReservationsByRenterId(String renterId) {
         Set<ReservationEntity> reservations = reservationMongoRepository.findReservationEntitiesByRenterId(renterId)
-                .orElseThrow(() -> new EntityNotFoundException("Reservations don't found for renter with id: " + renterId));
+                .orElseThrow(() -> new EntityNotFoundException("Reservations with renter id " + renterId + " don't found"));
 
         return reservations.stream()
                 .map(reservation -> modelMapper.map(reservation, Reservation.class))
                 .collect(Collectors.toUnmodifiableSet());
     }
+
+    @Override
+    public Reservation findReservationByReservationId(String reservationId) {
+        ReservationEntity reservationEntity = reservationMongoRepository.findById(reservationId)
+                .orElseThrow(() -> new EntityNotFoundException("Reservation with id " + reservationId + " doesn't found"));
+
+        return modelMapper.map(reservationEntity, Reservation.class);
+    }
+
 
     @Override
     public void deleteReservationsByPropertyId(String propertyId) {
@@ -43,5 +52,14 @@ public class ReservationRepositoryImpl implements ReservationRepository {
         }
 
         reservationMongoRepository.deleteByPropertyId(propertyId);
+    }
+
+
+    @Override
+    public void deleteReservationByReservationId(String reservationId) {
+        ReservationEntity reservationEntity = reservationMongoRepository.findById(reservationId)
+                .orElseThrow(() -> new EntityNotFoundException("Reservation with id " + reservationId + " doesn't exist"));
+
+        reservationMongoRepository.delete(reservationEntity);
     }
 }

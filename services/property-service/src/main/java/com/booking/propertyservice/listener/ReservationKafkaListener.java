@@ -31,6 +31,12 @@ public class ReservationKafkaListener implements KafkaConsumer<ReservationEvent>
                 keys.toString(),
                 partitions.toString(),
                 offsets.toString());
-        messages.forEach(reservationService::createReservation);
+
+        messages.forEach(reservationEvent -> {
+            switch (reservationEvent.getReservationStatus()) {
+                case RESERVED -> reservationService.createReservation(reservationEvent);
+                case CANCELED -> reservationService.deleteReservation(reservationEvent);
+            }
+        });
     }
 }

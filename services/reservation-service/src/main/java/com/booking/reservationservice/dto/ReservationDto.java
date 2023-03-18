@@ -21,7 +21,7 @@ public class ReservationDto {
     private String id;
     private LocalDate checkIn;
     private LocalDate checkOut;
-    private Money price;
+    private Money totalPrice;
     @Valid
     private PropertyDto property;
     @Valid

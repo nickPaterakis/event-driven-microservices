@@ -14,17 +14,17 @@ public class Reservation extends AggregateRoot<String> {
     private LocalDate checkIn;
     private LocalDate checkOut;
     private Property property;
-    private Money price;
+    private Money totalPrice;
     private User renter;
     private User owner;
 
     @Builder
-    public Reservation(String id, LocalDate checkIn, LocalDate checkOut, Property property, Money price, User renter, User owner) {
+    public Reservation(String id, LocalDate checkIn, LocalDate checkOut, Property property, Money totalPrice, User renter, User owner) {
         super.setId(id);
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.property = property;
-        this.price = price;
+        this.totalPrice = totalPrice;
         this.renter = renter;
         this.owner = owner;
     }

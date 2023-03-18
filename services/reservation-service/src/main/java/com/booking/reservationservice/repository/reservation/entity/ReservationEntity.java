@@ -18,7 +18,7 @@ public class ReservationEntity {
     private LocalDate checkIn;
     private LocalDate checkOut;
     private PropertyEntity property;
-    private Money price;
+    private Money totalPrice;
     private UserEntity renter;
     private UserEntity owner;
 }

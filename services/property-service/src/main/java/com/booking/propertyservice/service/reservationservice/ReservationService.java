@@ -5,4 +5,6 @@ import com.booking.domain.event.reservation.ReservationEvent;
 public interface ReservationService {
 
     void createReservation(ReservationEvent reservationEvent);
+
+    void deleteReservation(ReservationEvent reservationEvent);
 }

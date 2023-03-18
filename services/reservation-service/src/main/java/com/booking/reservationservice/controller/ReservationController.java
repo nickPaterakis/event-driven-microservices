@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @RestController
@@ -27,7 +28,15 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<ReservationDto> createReservation(@Valid @RequestBody ReservationDto reservationDto) {
         ReservationDto createdReservation = reservationService.createReservation(reservationDto);
-        return  ResponseEntity.status(HttpStatus.OK).body(createdReservation);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
+    }
+
+    @Operation(summary = "Cancel Reservation")
+    @ApiResponse(code = 200, message = "Reservation canceled", response = ReservationDto.class)
+    @DeleteMapping("/{reservationId}")
+    public ResponseEntity<String> canceledReservation(@NotEmpty @PathVariable String reservationId) {
+        reservationService.cancelReservation(reservationId);
+        return ResponseEntity.status(HttpStatus.OK).body("Canceled reservation with id:" + reservationId);
     }
 
     @Operation(summary = "Find reservations by renter's id")
@@ -35,9 +44,9 @@ public class ReservationController {
             @ApiResponse(code = 200, message = "Reservations found", response = ReservationDto.class),
             @ApiResponse(code = 404, message = "Reservations don't found ", response = EntityNotFoundException.class)
     })
-    @GetMapping("/renter/{id}")
-    public ResponseEntity<Set<ReservationDto>> getReservationByRenterId(@PathVariable String id) {
-        Set<ReservationDto> reservations = reservationService.getReservationsByRenterId(id);
+    @GetMapping("/renter/{renterId}")
+    public ResponseEntity<Set<ReservationDto>> getReservationByRenterId(@NotEmpty @PathVariable String renterId) {
+        Set<ReservationDto> reservations = reservationService.getReservationsByRenterId(renterId);
         return ResponseEntity.status(HttpStatus.OK).body(reservations);
     }
 }

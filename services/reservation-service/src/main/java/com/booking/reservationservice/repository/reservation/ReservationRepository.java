@@ -10,5 +10,9 @@ public interface ReservationRepository {
 
     Set<Reservation> findReservationsByRenterId(String renterId);
 
+    Reservation findReservationByReservationId(String renterId);
+
     void deleteReservationsByPropertyId(String propertyId);
+
+    void deleteReservationByReservationId(String reservationId);
 }

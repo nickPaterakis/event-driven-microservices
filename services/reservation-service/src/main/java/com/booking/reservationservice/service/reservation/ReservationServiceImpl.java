@@ -1,6 +1,7 @@
 package com.booking.reservationservice.service.reservation;
 
 import com.booking.domain.model.outbox.OutboxStatus;
+import com.booking.domain.model.reservation.ReservationStatus;
 import com.booking.reservationservice.dto.ReservationDto;
 import com.booking.reservationservice.model.Reservation;
 import com.booking.reservationservice.outbox.model.ReservationEventPayload;
@@ -37,10 +38,28 @@ public class ReservationServiceImpl implements ReservationService {
         ReservationEventPayload reservationEventPayload = modelMapper
                 .map(savedReservation, ReservationEventPayload.class);
 
+        reservationEventPayload.setReservationStatus(ReservationStatus.RESERVED);
+
         reservationOutboxHelper.saveReservationOutboxMessage(reservationServiceHelper
                 .createReservationOutboxMessage(reservationEventPayload, OutboxStatus.STARTED));
 
         return modelMapper.map(savedReservation, ReservationDto.class);
+    }
+
+    @Override
+    public void cancelReservation(String reservationId) {
+        log.info("Canceled reservation with id: {}", reservationId);
+        Reservation reservation = reservationRepository.findReservationByReservationId(reservationId);
+
+        reservationRepository.deleteReservationByReservationId(reservationId);
+
+        ReservationEventPayload reservationEventPayload = modelMapper
+                .map(reservation, ReservationEventPayload.class);
+
+        reservationEventPayload.setReservationStatus(ReservationStatus.CANCELED);
+
+        reservationOutboxHelper.saveReservationOutboxMessage(reservationServiceHelper
+                .createReservationOutboxMessage(reservationEventPayload, OutboxStatus.STARTED));
     }
 
     @Override
