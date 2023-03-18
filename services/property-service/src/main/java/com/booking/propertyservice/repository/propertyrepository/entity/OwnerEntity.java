@@ -1,8 +1,9 @@
-package com.booking.propertyservice.model;
-
+package com.booking.propertyservice.repository.propertyrepository.entity;
 
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
@@ -11,8 +12,10 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Owner {
+@Document(collection = "owners")
+public class OwnerEntity {
 
+    @Id
     private String id;
     private String email;
     private String firstName;

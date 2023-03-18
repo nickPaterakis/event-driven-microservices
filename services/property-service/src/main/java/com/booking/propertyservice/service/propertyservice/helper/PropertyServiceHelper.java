@@ -1,11 +1,12 @@
 package com.booking.propertyservice.service.propertyservice.helper;
 
+import com.booking.domain.exception.EntityNotFoundException;
 import com.booking.propertyservice.dto.response.OwnerDto;
 import com.booking.propertyservice.dto.response.PropertyDetailsDto;
 import com.booking.propertyservice.dto.response.PropertyDto;
 import com.booking.propertyservice.model.Owner;
 import com.booking.propertyservice.model.Property;
-import com.booking.propertyservice.repository.OwnerRepository;
+import com.booking.propertyservice.repository.ownerrepository.OwnerRepository;
 import com.booking.propertyservice.repository.propertyrepository.PropertyRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.storage.BlobId;
@@ -32,13 +33,14 @@ public class PropertyServiceHelper {
 
     public PropertyDetailsDto saveProperty(PropertyDetailsDto propertyDetailsDto) {
         Property property = modelMapper.map(propertyDetailsDto, Property.class);
-        return modelMapper.map(propertyRepository.save(property), PropertyDetailsDto.class);
+        return modelMapper.map(propertyRepository.saveProperty(property), PropertyDetailsDto.class);
     }
 
-    public void saveOwner(OwnerDto owner) {
-        Optional<Owner> optionalOwner = ownerRepository.findByEmail(owner.getEmail());
-        if (optionalOwner.isEmpty()) {
-            ownerRepository.save(modelMapper.map(owner, Owner.class));
+    public void saveOwner(OwnerDto ownerDto) {
+        try {
+            ownerRepository.findById(ownerDto.getId());
+        } catch (EntityNotFoundException ex) {
+            ownerRepository.save(modelMapper.map(ownerDto, Owner.class));
         }
     }
 
@@ -70,7 +72,7 @@ public class PropertyServiceHelper {
 
     private String getImageCloudDirectoryUrl(PropertyDetailsDto propertyDetailsDto) {
         return "images/properties/" + propertyDetailsDto.getAddress().getCountry() + "/" +
-                propertyDetailsDto.getOwner().getEmail() + "/" + UUID.randomUUID().toString();
+                propertyDetailsDto.getOwner().getEmail() + "/" + UUID.randomUUID();
     }
 
     private void setImagesUrls(String imageCloudDirectory, PropertyDetailsDto propertyDetailsDto, MultipartFile[] files) {

@@ -1,7 +1,8 @@
-package com.booking.propertyservice.model;
-
+package com.booking.propertyservice.repository.propertyrepository.entity;
 
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -12,7 +13,8 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Property {
+@Document(collection = "properties")
+public class PropertyEntity {
 
     private String id;
     private Integer maxGuestNumber;
@@ -25,6 +27,7 @@ public class Property {
     private String guestSpace;
     private Set<String> amenities;
     private Set<String> images;
-    private Address address;
-    private Owner owner;
+    private AddressEntity address;
+    @DBRef
+    private OwnerEntity owner;
 }

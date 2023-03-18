@@ -4,14 +4,14 @@ package com.booking.propertyservice.service.propertyservice;
 import com.booking.propertyservice.dto.request.SearchCriteria;
 import com.booking.propertyservice.dto.response.PropertyDetailsDto;
 import com.booking.propertyservice.dto.response.PropertyDto;
-import com.booking.propertyservice.dto.response.PropertyDtoPage;
+import com.booking.propertyservice.dto.response.PropertyPageDto;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Set;
+import java.util.List;
 
 public interface PropertyService {
 
-    PropertyDtoPage searchProperties(SearchCriteria searchCriteria);
+    PropertyPageDto searchProperties(SearchCriteria searchCriteria);
 
     PropertyDetailsDto getPropertyById(String id);
 
@@ -19,6 +19,5 @@ public interface PropertyService {
 
     void deleteProperty(String id);
 
-    Set<PropertyDto> getPropertiesByOwnerId(String email);
-
+    List<PropertyDto> getPropertiesByOwnerId(String email);
 }

@@ -1,6 +1,7 @@
 package com.booking.propertyservice.repository.propertyrepository;
 
 import com.booking.propertyservice.model.Property;
+import com.booking.propertyservice.repository.propertyrepository.entity.PropertyEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +20,10 @@ public class CustomPropertyRepositoryImpl implements CustomPropertyRepository {
 
     private final MongoTemplate mongoTemplate;
 
-    public Page<Property> findUnreservedProperties(List<String> propertyIds,
-                                                   Integer guestNumber,
-                                                   String country,
-                                                   Pageable pageable) {
+    public Page<PropertyEntity> findUnreservedProperties(List<String> propertyIds,
+                                                         Integer guestNumber,
+                                                         String country,
+                                                         Pageable pageable) {
         final Query query = new Query().with(pageable);
         final List<Criteria> criteria = new ArrayList<>();
 
@@ -37,7 +38,7 @@ public class CustomPropertyRepositoryImpl implements CustomPropertyRepository {
         query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[0])));
 
         return PageableExecutionUtils.getPage(
-                mongoTemplate.find(query, Property.class),
+                mongoTemplate.find(query, PropertyEntity.class),
                 pageable,
                 () -> mongoTemplate.count(query.skip(0).limit(0), Property.class));
     }

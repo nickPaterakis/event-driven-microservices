@@ -1,9 +1,8 @@
 package com.booking.propertyservice.service.ownerservice;
 
 import com.booking.domain.event.user.UserEvent;
-import com.booking.domain.exception.EntityNotFoundException;
-import com.booking.propertyservice.repository.OwnerRepository;
 import com.booking.propertyservice.model.Owner;
+import com.booking.propertyservice.repository.ownerrepository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,7 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public void updateOwner(UserEvent userEvent) {
-        Owner owner = ownerRepository.findById(userEvent.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Owner with email {} doesn't  found " + userEvent.getEmail()));
+        Owner owner = ownerRepository.findById(userEvent.getId());
 
         log.info("Update owner with email {}", userEvent.getEmail());
 

@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface CustomReservationRepository {
 
-    List<String> findReservedProperties(String country, LocalDate checkIn, LocalDate checkOut);
+    List<String> findReservedPropertiesIds(String country, LocalDate checkIn, LocalDate checkOut);
 }

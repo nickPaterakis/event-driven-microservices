@@ -21,7 +21,7 @@ public class CustomReservationRepositoryImpl implements CustomReservationReposit
     private static final String COUNTRY = "country";
 
     @Override
-    public List<String> findReservedProperties(String country, LocalDate checkIn, LocalDate checkOut) {
+    public List<String> findReservedPropertiesIds(String country, LocalDate checkIn, LocalDate checkOut) {
         final Query query = new Query();
         final List<Criteria> criteria = new ArrayList<>();
 
@@ -51,6 +51,8 @@ public class CustomReservationRepositoryImpl implements CustomReservationReposit
 
         List<Reservation> reservations = mongoTemplate.find(query, Reservation.class, "reservations");
         
-        return reservations.stream().map(Reservation::getPropertyId).collect(Collectors.toUnmodifiableList());
+        return reservations.stream()
+                .map(Reservation::getPropertyId)
+                .toList();
     }
 }

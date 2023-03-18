@@ -2,10 +2,10 @@ package com.booking.propertyservice.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -15,10 +15,10 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Accessors(chain = true)
+@Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PropertyDtoPage {
+public class PropertyPageDto {
     @NotNull
     @Min(value = 0)
     private Long totalElements;

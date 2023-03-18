@@ -1,14 +1,13 @@
-package com.booking.propertyservice.model;
+package com.booking.propertyservice.repository.propertyrepository.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
-@ToString
 @NoArgsConstructor
-@AllArgsConstructor
-public class Address {
+public class AddressEntity {
 
     private String country;
     private String city;

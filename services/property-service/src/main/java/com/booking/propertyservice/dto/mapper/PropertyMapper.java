@@ -1,18 +1,16 @@
 package com.booking.propertyservice.dto.mapper;
 
 import com.booking.propertyservice.dto.response.PropertyDto;
-import com.booking.propertyservice.dto.response.PropertyDtoPage;
-import com.booking.propertyservice.model.Property;
-import org.springframework.data.domain.Page;
+import com.booking.propertyservice.dto.response.PropertyPageDto;
+import com.booking.propertyservice.model.PropertyPage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PropertyMapper {
 
-    public static PropertyDtoPage toPropertyDtoPage(Page<Property> propertyPage) {
-        List<PropertyDto> propertyDto = propertyPage.get().map(property ->
+    public static PropertyPageDto toPropertyPageDto(PropertyPage propertyPage) {
+        List<PropertyDto> propertyDtos = propertyPage.getProperties().stream().map(property ->
                 new PropertyDto().setPropertyType(property.getPropertyType())
                         .setImage(new ArrayList<>(property.getImages()).get(0))
                         .setCountry(property.getAddress().getCountry())
@@ -24,9 +22,11 @@ public class PropertyMapper {
                         .setGuestSpace(property.getGuestSpace())
                         .setMaxGuestNumber(property.getMaxGuestNumber())
                         .setPricePerNight(property.getPricePerNight()))
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
-        return new PropertyDtoPage().setTotalElements(propertyPage.getTotalElements())
-                .setProperties(propertyDto);
+        return PropertyPageDto.builder()
+                .totalElements(propertyPage.getTotalElements())
+                .properties(propertyDtos)
+                .build();
     }
 }

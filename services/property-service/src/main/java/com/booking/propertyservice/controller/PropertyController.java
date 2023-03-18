@@ -5,7 +5,7 @@ import com.booking.propertyservice.service.propertyservice.PropertyService;
 import com.booking.propertyservice.dto.response.PropertyDetailsDto;
 import com.booking.propertyservice.dto.response.PropertyDto;
 import com.booking.propertyservice.dto.request.SearchCriteria;
-import com.booking.propertyservice.dto.response.PropertyDtoPage;
+import com.booking.propertyservice.dto.response.PropertyPageDto;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -30,13 +30,13 @@ public class PropertyController {
 
     @Operation(summary = "Search properties based on country, reservations, and guest number")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Properties found", response = PropertyDtoPage.class),
+            @ApiResponse(code = 200, message = "Properties found", response = PropertyPageDto.class),
             @ApiResponse(code = 404, message = "Properties don't found ", response = EntityNotFoundException.class)
     })
     @GetMapping("/search")
-    public ResponseEntity<PropertyDtoPage> searchProperties(@Valid SearchCriteria searchCriteria) {
-        PropertyDtoPage propertyDtoPage = propertyService.searchProperties(searchCriteria);
-        return ResponseEntity.status(HttpStatus.OK).body(propertyDtoPage);
+    public ResponseEntity<PropertyPageDto> searchProperties(@Valid SearchCriteria searchCriteria) {
+        PropertyPageDto propertyPageDto = propertyService.searchProperties(searchCriteria);
+        return ResponseEntity.status(HttpStatus.OK).body(propertyPageDto);
     }
 
     @Operation(summary = "Get an property by its id")
@@ -45,8 +45,8 @@ public class PropertyController {
             @ApiResponse(code = 404, message = "Property not found", response = EntityNotFoundException.class)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<PropertyDetailsDto> getPropertyById(@PathVariable String id) {
-        PropertyDetailsDto propertyDto = propertyService.getPropertyById(id);
+    public ResponseEntity<PropertyDetailsDto> getPropertyById(@PathVariable("id") String propertyId) {
+        PropertyDetailsDto propertyDto = propertyService.getPropertyById(propertyId);
         return ResponseEntity.status(HttpStatus.OK).body(propertyDto);
     }
 
@@ -62,9 +62,9 @@ public class PropertyController {
     @Operation(summary = "Delete Property")
     @ApiResponse(code = 201, message = "Property deleted", response = PropertyDetailsDto.class)
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProperty(@PathVariable String id) {
-        propertyService.deleteProperty(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Deleted property with id:" + id);
+    public ResponseEntity<String> deleteProperty(@PathVariable("id") String propertyId) {
+        propertyService.deleteProperty(propertyId);
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted property with id:" + propertyId);
     }
 
     @Operation(summary = "Get properties based on user's id")
@@ -73,8 +73,8 @@ public class PropertyController {
             @ApiResponse(code = 404, message = "Properties don't found based on user's id", response = EntityNotFoundException.class)
     })
     @GetMapping("/owner/{id}")
-    public ResponseEntity<Set<PropertyDto>> getPropertyByOwnerId(@PathVariable String id) {
-        Set<PropertyDto> properties = propertyService.getPropertiesByOwnerId(id);
+    public ResponseEntity<List<PropertyDto>> getPropertyByOwnerId(@PathVariable("id") String ownerId) {
+        List<PropertyDto> properties = propertyService.getPropertiesByOwnerId(ownerId);
         return ResponseEntity.status(HttpStatus.OK).body(properties);
     }
 }
