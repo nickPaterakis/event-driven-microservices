@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>booking-service-chassis</module>
-        <module>booking-build-chassis</module>
+        <module>service-chassis</module>
+        <module>build-chassis</module>
     </modules>
 </project>

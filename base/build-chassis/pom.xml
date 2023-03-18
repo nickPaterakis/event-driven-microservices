@@ -10,16 +10,16 @@
 	</parent>
 
 	<groupId>com.booking</groupId>
-	<artifactId>booking-build-chassis</artifactId>
+	<artifactId>build-chassis</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>booking-build-chassis</name>
+	<name>build-chassis</name>
 	<description>Parent pom project for Building Booking Services</description>
 	<packaging>pom</packaging>
 
 	<properties>
 		<java.version>17</java.version>
 		<maven.compiler.plugin.version>3.9.0</maven.compiler.plugin.version>
-		<spring-kafka.version>2.8.2</spring-kafka.version>
+		<spring-kafka.version>3.0.4</spring-kafka.version>
 		<org.lombok.version>1.18.26</org.lombok.version>
 		<maintainer.name>Nicholas Paterakis</maintainer.name>
 		<maintainer.email>nikolas.paterakis@gmail.com</maintainer.email>
