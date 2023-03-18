@@ -15,5 +15,5 @@ public class Property {
     private String propertyType;
     private String country;
     private String location;
-    private Money money;
+    private Money pricePerNight;
 }
