@@ -14,7 +14,7 @@ To facilitate communication between the frontend application and the microservic
 
 ![architecture](https://user-images.githubusercontent.com/36018286/221354604-b56cd893-d141-4bcb-9f1b-03a45e9950d5.png)
 
-## Service Architecture
+## Services Architecture
 The system's services architecture draws inspiration from both Hexagonal (Ports & Adapters) Architecture and Clean Architecture.
 
 By using these patterns, the system achieves a high degree of modularity and separation of concerns, allowing for easier maintenance, testing, and evolution of the system over time. The Hexagonal (Ports & Adapters) Architecture focuses on defining clear boundaries between the core business logic of the system and the external interfaces (such as databases, APIs, or message queues). The Clean Architecture emphasizes the use of layers to organize the codebase into distinct modules that communicate through well-defined interfaces.
