@@ -51,7 +51,7 @@ kafka-consumer-config:
 spring:
   config:
     activate:
-      on-profile: docker
+      on-profile: prod
 
 property-service:
   database:

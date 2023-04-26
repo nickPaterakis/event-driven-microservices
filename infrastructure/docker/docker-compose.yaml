@@ -114,8 +114,6 @@ services:
     container_name: property-service
     hostname: property-service
     image: property-service
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - my-network
     depends_on:
@@ -126,8 +124,6 @@ services:
     container_name: user-service
     hostname: user-service
     image: user-service
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - my-network
     depends_on:
@@ -138,14 +134,20 @@ services:
     container_name: reservation-service
     hostname: reservation-service
     image: reservation-service
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - my-network
     depends_on:
       - mongo
     ports:
       - 8085:8085
+  notification-service:
+    container_name: notification-service
+    hostname: notification-service
+    image: notification-service
+    networks:
+      - my-network
+    ports:
+      - 8086:8086
 
 networks:
   my-network:

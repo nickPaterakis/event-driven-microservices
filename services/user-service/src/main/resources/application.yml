@@ -23,7 +23,7 @@ spring:
 spring:
   config:
     activate:
-      on-profile: docker
+      on-profile: prod
 user-service:
   database:
     mongo:

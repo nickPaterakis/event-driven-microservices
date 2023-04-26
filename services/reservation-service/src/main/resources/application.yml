@@ -61,7 +61,7 @@ kafka-consumer-config:
 spring:
   config:
     activate:
-      on-profile: docker
+      on-profile: prod
 
 reservation-service:
   database:

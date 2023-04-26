@@ -1,53 +1,20 @@
-#### Start of builder image
-# ------------------------
-# Builder stage to prepare application for final image
-FROM openjdk:11-jre as builder
-WORKDIR temp
+# Use a lightweight base image with Java 17 preinstalled
+FROM openjdk:17-jdk-slim
 
-# Fatjar location, but could be set to different location from command line
+# Set an argument for the JAR file location
 ARG JAR_FILE=target/*.jar
 
-# Copy fat jar file to current image builder
-COPY ${JAR_FILE} application.jar
+# Set the working directory to /app
+WORKDIR /app
 
-# Extract the jar file layer
-RUN java -Djarmode=layertools -jar --enable-preview application.jar extract
-#### End of builder stage
+# Copy the JAR file into the container
+COPY ${JAR_FILE} /app/application.jar
 
-#### Start of actual image
-# ------------------------
-# Build image based on latest JDK 11 base image, based on latest debian buster OS
-FROM openjdk:11-jre
+# Specify any runtime environment variables here
+ENV SPRING_PROFILES_ACTIVE=prod
 
-# Set image information, but could be set to different location from command line
-ARG IMAGE_VERSION="1.0-SNAPSHOT"
-ARG IMAGE_NAME="Reservation Service"
-ARG MAINTAINER="Nicholas Paterakis <nikolas.paterakis@gmail.com>"
-
-LABEL version=${IMAGE_VERSION} name=${IMAGE_NAME} maintainer=${MAINTAINER}
-
-# Limiting security access to not user root user
-RUN addgroup nicholaspat && useradd -g nicholaspat -ms /bin/bash nicholas
-
-# Setting user to current created user
-USER nicholas
-
-# Set working directory to application folder
-WORKDIR /home/nicholas/application
-
-# Copy all layers from builder stage to current image
-COPY --from=builder temp/dependencies/ ./
-COPY --from=builder temp/snapshot-dependencies/ ./
-COPY --from=builder temp/spring-boot-loader/ ./
-COPY --from=builder temp/application/ ./
-
-# Expose current application to port 8085
+# Expose the port that your application listens on
 EXPOSE 8085
 
-ARG JAVA_OPTS=""
-
-#Run the application with JVM configs if any
-ENTRYPOINT ["bash", "-c", \
-"java -server --enable-preview \
-org.springframework.boot.loader.JarLauncher ${0} ${@}"]
-#ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+# Start the application when the container launches
+CMD ["java", "-jar", "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "/app/application.jar"]

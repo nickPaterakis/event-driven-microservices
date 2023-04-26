@@ -14,7 +14,16 @@ COPY ${JAR_FILE} /app/application.jar
 ENV SPRING_PROFILES_ACTIVE=prod
 
 # Expose the port that your application listens on
-EXPOSE 8088
+EXPOSE 8082
 
 # Start the application when the container launches
 CMD ["java", "-jar", "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "/app/application.jar"]
+
+
+
+
+
+
+
+
+
