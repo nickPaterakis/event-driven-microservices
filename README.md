@@ -72,13 +72,13 @@ This application uses Google Cloud Storage for storing and retrieving images. To
 
 The process of running the application involves starting the services, configuring MongoDB as a replica set for Debezium, and finally, configuring Debezium itself. The steps below provide a detailed guide:
 
-<b>Step 1: Navigate to the Docker Compose File</b>
+<b>Step 1: Start the Services</b>
 
-First, navigate to the directory containing the docker-compose.yml file. The file is located in the infrastructure/docker directory. To navigate to this directory, use the following command in your terminal:
+Navigate to the directory containing the docker-compose.yml file by running the following command:
+  
 ```
 cd infrastructure/docker
 ```
-<b>Step 2: Start the Services</b>
 
 Next, start all the services defined in the docker-compose.yml file by running the following command:
 ```
@@ -86,7 +86,7 @@ docker-compose up -d
 ```
 The -d flag will start the containers in detached mode, which means they'll run in the background.
 
-<b>Step 3: Configure MongoDB Replica Set</b>
+<b>Step 2: Configure MongoDB Replica Set</b>
 
 While the services are starting, MongoDB needs to be configured as a replica set for Debezium to work correctly. The configuration script for this is located in infrastructure/debezium/debezium-mongo-setup.sh.
 
@@ -102,7 +102,7 @@ Then, execute the script to set up MongoDB as a replica set:
 ```
 This script will set up MongoDB as a replica set, which is necessary for Debezium to capture changes.
 
-<b>Step 4: Configure Debezium</b>
+<b>Step 3: Configure Debezium</b>
 
 After setting up MongoDB as a replica set, Debezium itself needs to be configured. This can be done using the send-config-to-debezium.sh script located in the infrastructure/debezium directory.
 
@@ -117,7 +117,7 @@ Then, run the script:
 ```
 This script will send the necessary configurations to Debezium.
 
-<b>Step 5: Access the Application</b>
+<b>Step 4: Access the Application</b>
 
 Once the microservices are up and running, you can interact with the system by sending requests to the API gateway (which is exposed on port 8000).
 
