@@ -1,5 +1,5 @@
 # Event Driven Microservices <img alt="GitHub" src="https://img.shields.io/github/license/nickPaterakis/Booking-Microservices">
-## Introduction
+## Overview
 The event-driven-microservices project demonstrates how to build loosely coupled, fault-tolerant, resilient, and highly-scalable microservices. The patterns implemented in the project include the Database-per-Service pattern, the Choreography-based Saga pattern, the CQRS pattern, the Domain Event pattern, the Messaging pattern, the Outbox pattern (log tailing, polling publisher), and the API Gateway pattern. The services architecture incorporates ideas from Hexagonal (Ports & Adapters) Architecture and Clean Architecture.
 
 The project utilizes the following technologies: Java, Spring Boot, Maven, Kafka, MongoDB, Docker, Debezium, and Kong.
