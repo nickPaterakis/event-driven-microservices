@@ -37,7 +37,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public PropertyPageDto searchProperties(SearchCriteria searchCriteria) {
-        log.info("Search Properties");
+        log.info("Searching properties with criteria: {}", searchCriteria);
 
         List<String> reservedPropertiesIds = reservationRepository.findReservedPropertiesIds(searchCriteria.getCountry(),
                 searchCriteria.getCheckIn(), searchCriteria.getCheckOut());
@@ -76,7 +76,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     @Transactional
     public void deleteProperty(String propertyId) {
-        log.info("Delete property with id: {}", propertyId);
+        log.info("Deleting property with id: {}", propertyId);
 
         Property property = propertyRepository.findPropertyByPropertyId(propertyId);
 
@@ -87,8 +87,11 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public List<PropertyDto> getPropertiesByOwnerId(String ownerId) {
-        log.info("Get user's properties");
+        log.info("Getting properties for owner with id: {}", ownerId);
+
         List<Property> propertyList = propertyRepository.findPropertiesByOwnerId(ownerId);
+
+        log.debug("Found {} properties for owner with id {}", propertyList.size(), ownerId);
 
         return propertyList.stream()
                 .map(propertyServiceHelper::getPropertyDto)

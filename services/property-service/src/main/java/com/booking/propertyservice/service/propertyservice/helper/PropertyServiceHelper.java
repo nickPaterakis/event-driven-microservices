@@ -14,12 +14,14 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PropertyServiceHelper {
@@ -33,6 +35,7 @@ public class PropertyServiceHelper {
 
     public PropertyDetailsDto saveProperty(PropertyDetailsDto propertyDetailsDto) {
         Property property = modelMapper.map(propertyDetailsDto, Property.class);
+        log.info("Saving property with title: {}", propertyDetailsDto.getTitle());
         return modelMapper.map(propertyRepository.saveProperty(property), PropertyDetailsDto.class);
     }
 
@@ -40,6 +43,7 @@ public class PropertyServiceHelper {
         try {
             ownerRepository.findById(ownerDto.getId());
         } catch (EntityNotFoundException ex) {
+            log.info("Saving owner with ID: {}", ownerDto.getId());
             ownerRepository.save(modelMapper.map(ownerDto, Owner.class));
         }
     }
@@ -59,15 +63,16 @@ public class PropertyServiceHelper {
     }
 
     public void sendPropertyImagesToCloud(MultipartFile[] files, String imageDirectoryUrl) {
-        Arrays.asList(files).forEach(image -> sendImageToCloud(image, imageDirectoryUrl));
+        Arrays.asList(files).forEach(image -> uploadImageToCloud(image, imageDirectoryUrl));
     }
 
     @SneakyThrows
-    private void sendImageToCloud(MultipartFile file, String imageDirectoryUrl) {
+    private void uploadImageToCloud(MultipartFile file, String imageDirectoryUrl) {
         BlobId blobId = BlobId.of("booking-ms", imageDirectoryUrl + "/" + file.getOriginalFilename());
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
         byte[] data = file.getBytes();
         storage.create(blobInfo, data);
+        log.info("Uploaded image: {} to URL: {}", file.getOriginalFilename(), imageDirectoryUrl);
     }
 
     private String getImageCloudDirectoryUrl(PropertyDetailsDto propertyDetailsDto) {
