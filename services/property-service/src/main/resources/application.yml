@@ -2,6 +2,9 @@ server:
   port: 8088
 
 property-service:
+  gcp:
+    bucket:
+      name: booking-project
   database:
     mongo:
       host: localhost
