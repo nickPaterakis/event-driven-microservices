@@ -12,6 +12,7 @@ import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,8 @@ public class UserServiceHelper {
 
     private final Storage storage;
     private final UserRepository userRepository;
+    @Value("${user-service.gcp.bucket.name}")
+    private String bucketName;
 
     private static final String EMPTY_STRING = "";
 
@@ -38,7 +41,7 @@ public class UserServiceHelper {
 
     @SneakyThrows
     public void uploadImage(MultipartFile file, String imageDirectoryUrl) {
-        BlobId blobId = BlobId.of("booking-ms", imageDirectoryUrl);
+        BlobId blobId = BlobId.of(bucketName, imageDirectoryUrl);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
         byte[] data = file.getBytes();
         storage.create(blobInfo, data);
