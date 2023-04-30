@@ -40,3 +40,16 @@ kafka-consumer-config:
   max-partition-fetch-bytes-default: 1048576
   max-partition-fetch-bytes-boost-factor: 1
   poll-timeout-ms: 150
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+property-service:
+  database:
+    mongo:
+      host: mongo
+  kafka:
+    bootstrap-servers: kafka:29092
