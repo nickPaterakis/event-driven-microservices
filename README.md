@@ -1,5 +1,5 @@
 # Event Driven Microservices <img alt="GitHub" src="https://img.shields.io/github/license/nickPaterakis/Booking-Microservices">
-## Introduction
+## Overview
 The event-driven-microservices project demonstrates how to build loosely coupled, fault-tolerant, resilient, and highly-scalable microservices. The patterns implemented in the project include the Database-per-Service pattern, the Choreography-based Saga pattern, the CQRS pattern, the Domain Event pattern, the Messaging pattern, the Outbox pattern (log tailing, polling publisher), and the API Gateway pattern. The services architecture incorporates ideas from Hexagonal (Ports & Adapters) Architecture and Clean Architecture.
 
 The project utilizes the following technologies: Java, Spring Boot, Maven, Kafka, MongoDB, Docker, Debezium, and Kong.
@@ -25,39 +25,100 @@ By combining these two patterns, the system is able to achieve a clean and flexi
 ### Prerequisites
 Before running the application, ensure that you have installed the following tools:
 
-1. Docker (version 19 or later)
-2. Docker Compose (version 1.25 or later)
-3. Maven (version 3.6.0 or later)
+1. Docker 
+2. Docker Compose
+3. Java
+4. Maven 
 
-### Downloading the code
-To download the code, you can either clone the repository using Git, or download the ZIP file and extract it to a directory on your local machine. Here are the steps to clone the repository:
-1. Open a terminal or command prompt on your machine.
-2. Navigate to the directory where you want to store the code.
-3. Run the following command:
+### Setting Up the Project
+Follow the steps below to set up the project on your local machine:
 
-```console
+<b>Step 1: Clone the Repository</b>
+
+Open a terminal window and navigate to the directory where you want to store the project. Then, clone the repository by running:
+
+```
 git clone https://github.com/nickPaterakis/event-driven-microservices.git 
 ```
 
-### Building the Docker Images
-In order to build the Docker images, you first need to build the JAR files for each service. To do this, you will need to download and install Maven on your machine. Once you have Maven installed, navigate to the root directory of the project and run the following command:
+<b>Step 2: Build the Project</b>
 
-```console
+Navigate to the root directory of the project using the terminal and run:
+
+```
 mvn install
 ```
-This will build the JAR files for all services.
+This command will download all the necessary dependencies and build JAR files for each service.
 
-After building the JAR files, you can build the Docker images. To do this, follow these steps:
+<b>Step 3: Build Docker Images</b>
 
-1. Open a terminal or command prompt.
-2. Navigate to the services/user-service directory.
-3. Run the following command to build the Docker image for the user-service:
-```console
-docker build -t user-service .
+Each service in the project has a corresponding Dockerfile. To build these images, navigate to each service directory and run the following command:
+
 ```
-Repeat steps 2-3 for the property-service, reservation-service, and notification-service directories to build the Docker images for those services.
+docker build -t <image-name> .
+```
+Replace <image-name> with the appropriate name for each service. Repeat this step for each service.
+
+<b>Step 4: Set up Google Cloud Storage</b>
+
+This application uses Google Cloud Storage for storing and retrieving images. To set up Google Cloud Storage:
+
+1. Create a Google Cloud account.
+2. Create a storage bucket and ensure it's publicly accessible.
+3. Create a service account with appropriate permissions (e.g., "Storage Admin").
+4. Download the service account key and rename it to gcp-account-file.json.
+5. Place the key in the resources directories of the property and user services.
 
 ### Running the application
+
+The process of running the application involves starting the services, configuring MongoDB as a replica set for Debezium, and finally, configuring Debezium itself. The steps below provide a detailed guide:
+
+<b>Step 1: Start the Services</b>
+
+Navigate to the directory containing the docker-compose.yml file by running the following command:
+  
+```
+cd infrastructure/docker
+```
+
+Next, start all the services defined in the docker-compose.yml file by running the following command:
+```
+docker-compose up -d
+```
+The -d flag will start the containers in detached mode, which means they'll run in the background.
+
+<b>Step 2: Configure MongoDB Replica Set</b>
+
+While the services are starting, MongoDB needs to be configured as a replica set for Debezium to work correctly. The configuration script for this is located in infrastructure/debezium/debezium-mongo-setup.sh.
+
+First, ensure that the script is executable. Navigate to the infrastructure/debezium directory and run the following command:
+
+```
+chmod +x debezium-mongo-setup.sh
+```
+
+Then, execute the script to set up MongoDB as a replica set:
+```
+./debezium-mongo-setup.sh
+```
+This script will set up MongoDB as a replica set, which is necessary for Debezium to capture changes.
+
+<b>Step 3: Configure Debezium</b>
+
+After setting up MongoDB as a replica set, Debezium itself needs to be configured. This can be done using the send-config-to-debezium.sh script located in the infrastructure/debezium directory.
+
+First, ensure that this script is also executable:
+```
+chmod +x send-config-to-debezium.sh
+```
+
+Then, run the script:
+```
+./send-config-to-debezium.sh
+```
+This script will send the necessary configurations to Debezium.
+
+<b>Step 4: Access the Application</b>
 
 Once the microservices are up and running, you can interact with the system by sending requests to the API gateway (which is exposed on port 8000).
 
