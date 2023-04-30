@@ -61,8 +61,9 @@ Replace <image-name> with the appropriate name for each service. Repeat this ste
 
 <b>Step 4: Set up Google Cloud Storage</b>
 
-This application uses Google Cloud Storage for storing and retrieving images. To set up Google Cloud Storage:1. Create a Google Cloud account.
+This application uses Google Cloud Storage for storing and retrieving images. To set up Google Cloud Storage:
 
+1. Create a Google Cloud account.
 2. Create a storage bucket and ensure it's publicly accessible.
 3. Create a service account with appropriate permissions (e.g., "Storage Admin").
 4. Download the service account key and rename it to gcp-account-file.json.
