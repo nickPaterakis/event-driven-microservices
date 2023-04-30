@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,8 @@ public class PropertyServiceHelper {
     private final PropertyRepository propertyRepository;
     private final OwnerRepository ownerRepository;
     private final ModelMapper modelMapper;
+    @Value("${property-service.gcp.bucket.name}")
+    private String bucketName;
 
     private static final int FIRST_IMAGE = 0;
 
@@ -68,7 +71,7 @@ public class PropertyServiceHelper {
 
     @SneakyThrows
     private void uploadImageToCloud(MultipartFile file, String imageDirectoryUrl) {
-        BlobId blobId = BlobId.of("booking-ms", imageDirectoryUrl + "/" + file.getOriginalFilename());
+        BlobId blobId = BlobId.of(bucketName, imageDirectoryUrl + "/" + file.getOriginalFilename());
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
         byte[] data = file.getBytes();
         storage.create(blobInfo, data);

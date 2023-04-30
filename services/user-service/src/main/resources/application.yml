@@ -6,6 +6,9 @@ user-service:
     mongo:
       host: localhost
       port: 27017
+  gcp:
+    bucket:
+        name: booking-project
 
 spring:
   application:

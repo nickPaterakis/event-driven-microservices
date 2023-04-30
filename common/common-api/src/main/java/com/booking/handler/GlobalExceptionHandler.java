@@ -17,11 +17,6 @@ import java.util.List;
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> handleNotFoundExceptions(NotFoundException notFoundException) {
-        return createHttpErrorInfo(HttpStatus.NOT_FOUND, notFoundException);
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> serverExceptionHandler(Exception ex) {
         return createHttpErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR, ex);
