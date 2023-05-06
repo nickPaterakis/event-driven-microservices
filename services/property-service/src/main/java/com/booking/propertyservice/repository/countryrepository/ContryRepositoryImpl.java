@@ -21,4 +21,17 @@ public class ContryRepositoryImpl implements CountryRepository {
                 .map(countryEntity -> modelMapper.map(countryEntity, Country.class))
                 .toList();
     }
+
+    @Override
+    public void deleteAll() {
+        countryMongoRepository.deleteAll();
+    }
+
+    @Override
+    public void saveAll(List<Country> countries) {
+        List<CountryEntity> countryEntities = countries.stream()
+                .map(country -> modelMapper.map(country, CountryEntity.class))
+                .toList();
+        countryMongoRepository.saveAll(countryEntities);
+    }
 }
