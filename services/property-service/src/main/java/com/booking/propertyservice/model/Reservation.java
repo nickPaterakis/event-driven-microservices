@@ -1,7 +1,6 @@
 package com.booking.propertyservice.model;
 
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
@@ -11,7 +10,6 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "reservations")
 public class Reservation {
 
     private String id;
