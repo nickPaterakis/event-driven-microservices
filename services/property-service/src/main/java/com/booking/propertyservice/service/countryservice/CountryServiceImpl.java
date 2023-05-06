@@ -3,14 +3,13 @@ package com.booking.propertyservice.service.countryservice;
 import com.booking.domain.exception.EntityNotFoundException;
 import com.booking.propertyservice.dto.response.CountryDto;
 import com.booking.propertyservice.model.Country;
-import com.booking.propertyservice.repository.CountryRepository;
+import com.booking.propertyservice.repository.countryrepository.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,7 +27,7 @@ public class CountryServiceImpl implements CountryService {
         if (!countries.isEmpty()) {
             return countries.stream()
                     .map(country -> modelMapper.map(country, CountryDto.class))
-                    .collect(Collectors.toList());
+                    .toList();
         }
         throw new EntityNotFoundException("Countries records don't exist");
     }
