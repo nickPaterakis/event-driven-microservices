@@ -3,7 +3,7 @@ package com.booking.propertyservice.outbox.helper;
 import com.booking.domain.event.property.PropertyEvent;
 import com.booking.propertyservice.model.Property;
 import com.booking.propertyservice.outbox.model.Outbox;
-import com.booking.propertyservice.repository.OutboxRepository;
+import com.booking.propertyservice.repository.outboxrepository.OutboxRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
