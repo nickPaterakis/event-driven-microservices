@@ -74,6 +74,11 @@ public class UserServiceHelper {
         String imageUrl = updateImage(image, userDto);
         User user = userRepository.findByEmail(userDto.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("User with email " + userDto.getEmail() + " no found"));
+
+        if (imageUrl.isEmpty()) {
+            imageUrl = user.getImage();
+        }
+
         User updatedUser =  User.builder()
                 .id(user.getId())
                 .email(user.getEmail())
