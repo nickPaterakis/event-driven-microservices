@@ -1,6 +1,5 @@
 package com.booking.propertyservice.service.propertyservice;
 
-
 import com.booking.propertyservice.dto.request.SearchCriteria;
 import com.booking.propertyservice.dto.response.PropertyDetailsDto;
 import com.booking.propertyservice.dto.response.PropertyDto;
@@ -15,7 +14,7 @@ public interface PropertyService {
 
     PropertyDetailsDto getPropertyById(String id);
 
-    PropertyDetailsDto createProperty(MultipartFile[] images, String property);
+    PropertyDetailsDto createProperty(MultipartFile[] images, PropertyDetailsDto propertyDetailsDto);
 
     void deleteProperty(String id);
 

@@ -6,10 +6,12 @@ import com.booking.propertyservice.dto.response.PropertyDetailsDto;
 import com.booking.propertyservice.dto.response.PropertyDto;
 import com.booking.propertyservice.dto.request.SearchCriteria;
 import com.booking.propertyservice.dto.response.PropertyPageDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,7 @@ import java.util.List;
 public class PropertyController {
 
     private final PropertyService propertyService;
+    private final ObjectMapper objectMapper;
 
     @Operation(summary = "Search properties based on country, reservations, and guest number")
     @ApiResponses(value = {
@@ -53,10 +56,12 @@ public class PropertyController {
     @Operation(summary = "Create Property")
     @ApiResponse(code = 201, message = "Property created", response = PropertyDetailsDto.class)
     @PostMapping
+    @SneakyThrows
     public ResponseEntity<PropertyDetailsDto> createProperty(@NotNull @RequestPart("file") MultipartFile[] files,
-                                                             @NotEmpty @RequestPart("property") String property) {
-        PropertyDetailsDto propertyDetailsDto = propertyService.createProperty(files, property);
-        return ResponseEntity.status(HttpStatus.CREATED).body(propertyDetailsDto);
+            @NotEmpty @RequestPart("property") String property) {
+        PropertyDetailsDto propertyDetailsDto = objectMapper.readValue(property, PropertyDetailsDto.class);
+        PropertyDetailsDto createdProperty = propertyService.createProperty(files, propertyDetailsDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProperty);
     }
 
     @Operation(summary = "Delete Property")
