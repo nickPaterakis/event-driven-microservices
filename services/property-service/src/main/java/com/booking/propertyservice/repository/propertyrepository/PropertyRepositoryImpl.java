@@ -5,6 +5,7 @@ import com.booking.propertyservice.model.Property;
 import com.booking.propertyservice.model.PropertyPage;
 import com.booking.propertyservice.repository.propertyrepository.entity.PropertyEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import static com.booking.propertyservice.repository.propertyrepository.mapper.PropertyEntityMapper.toPropertyPage;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PropertyRepositoryImpl implements PropertyRepository {
@@ -27,7 +29,8 @@ public class PropertyRepositoryImpl implements PropertyRepository {
         Optional<PropertyEntity> propertyEntity = propertyMongoRepository.findById(propertyId);
 
         if (propertyEntity.isEmpty()) {
-            throw new EntityNotFoundException("Property with id " + propertyId + " doesn't exist");
+            log.warn("Property with id {} not found", propertyId);
+            throw new EntityNotFoundException("Property with id " + propertyId + " not found");
         }
 
         return modelMapper.map(propertyEntity.get(), Property.class);

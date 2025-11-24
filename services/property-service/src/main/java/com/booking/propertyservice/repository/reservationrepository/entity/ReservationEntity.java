@@ -1,6 +1,8 @@
-package com.booking.propertyservice.model;
+package com.booking.propertyservice.repository.reservationrepository.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
@@ -10,8 +12,10 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Reservation {
+@Document(collection = "reservations")
+public class ReservationEntity {
 
+    @Id
     private String id;
     private String reservationId;
     private LocalDate checkIn;

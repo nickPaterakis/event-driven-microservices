@@ -1,7 +1,7 @@
 package com.booking.propertyservice;
 
 import com.booking.propertyservice.model.Country;
-import com.booking.propertyservice.repository.CountryRepository;
+import com.booking.propertyservice.repository.countryrepository.CountryRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.CommandLineRunner;
