@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,40 +17,33 @@ public class CustomReservationRepositoryImpl implements CustomReservationReposit
     private static final String CHECK_IN = "checkIn";
     private static final String CHECK_OUT = "checkOut";
     private static final String COUNTRY = "country";
+    private static final String RESERVATIONS_COLLECTION = "reservations";
 
     @Override
     public List<String> findReservedPropertiesIds(String country, LocalDate checkIn, LocalDate checkOut) {
-        final Query query = new Query();
-        final List<Criteria> criteria = new ArrayList<>();
+        Query query = new Query();
+        query.addCriteria(Criteria.where(COUNTRY).is(country));
+        query.addCriteria(overlappingStayCriteria(checkIn, checkOut));
 
-        criteria.add(new Criteria().andOperator(
-                Criteria.where(CHECK_IN).lte(checkIn),
-                Criteria.where(CHECK_OUT).gte(checkIn)
-        ));
-
-        criteria.add(new Criteria().andOperator(
-                Criteria.where(CHECK_IN).gte(checkIn),
-                Criteria.where(CHECK_IN).lte(checkOut)
-        ));
-
-        criteria.add(new Criteria().andOperator(
-                Criteria.where(CHECK_IN).gte(checkIn),
-                Criteria.where(CHECK_OUT).lte(checkOut)
-        ));
-
-        criteria.add(new Criteria().andOperator(
-                Criteria.where(CHECK_IN).lte(checkIn),
-                Criteria.where(CHECK_OUT).gte(checkOut)
-        ));
-
-        query.addCriteria(new Criteria().andOperator(
-                Criteria.where(COUNTRY).is(country),
-                new Criteria().orOperator(criteria.toArray(new Criteria[0]))));
-
-        List<Reservation> reservations = mongoTemplate.find(query, Reservation.class, "reservations");
-        
-        return reservations.stream()
+        return mongoTemplate.find(query, Reservation.class, RESERVATIONS_COLLECTION)
+                .stream()
                 .map(Reservation::getPropertyId)
+                .distinct()
                 .toList();
+    }
+
+    private Criteria overlappingStayCriteria(LocalDate checkIn, LocalDate checkOut) {
+        List<Criteria> overlapScenarios = List.of(
+                andCriteria(Criteria.where(CHECK_IN).lte(checkIn), Criteria.where(CHECK_OUT).gte(checkIn)),
+                andCriteria(Criteria.where(CHECK_IN).gte(checkIn), Criteria.where(CHECK_IN).lte(checkOut)),
+                andCriteria(Criteria.where(CHECK_IN).gte(checkIn), Criteria.where(CHECK_OUT).lte(checkOut)),
+                andCriteria(Criteria.where(CHECK_IN).lte(checkIn), Criteria.where(CHECK_OUT).gte(checkOut))
+        );
+
+        return new Criteria().orOperator(overlapScenarios.toArray(new Criteria[0]));
+    }
+
+    private Criteria andCriteria(Criteria... criteria) {
+        return new Criteria().andOperator(criteria);
     }
 }
