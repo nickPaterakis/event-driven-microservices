@@ -3,6 +3,8 @@ package com.booking.userservice.controller;
 import com.booking.domain.exception.EntityNotFoundException;
 import com.booking.userservice.dto.UserDto;
 import com.booking.userservice.service.userservice.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +23,7 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final ObjectMapper objectMapper;
 
     @Operation(summary = "Get an user by its email")
     @ApiResponses(value = {
@@ -46,8 +49,9 @@ public class UserController {
             @ApiResponse(code = 404, message = "User not found", response = EntityNotFoundException.class)
     })
     @PutMapping
-    public ResponseEntity<UserDto> updateUser(@RequestPart("user") String userDto,
-                                              @RequestPart(value = "image", required = false) MultipartFile image) {
+    public ResponseEntity<UserDto> updateUser(@RequestPart("user") String userDtoJson,
+            @RequestPart(value = "image", required = false) MultipartFile image) throws JsonProcessingException {
+        UserDto userDto = objectMapper.readValue(userDtoJson, UserDto.class);
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userDto, image));
     }
 }

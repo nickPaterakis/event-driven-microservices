@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Implementation of UserService for managing user operations.
+ * Coordinates between repository, helper, and other services.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -34,15 +38,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         log.info("Create user with email: {}", userDto.getEmail());
+
         User user = modelMapper.map(userDto, User.class);
-        return modelMapper.map(userServiceHelper.saveUser(user), UserDto.class);
+        User savedUser = userServiceHelper.saveUser(user);
+
+        return modelMapper.map(savedUser, UserDto.class);
     }
 
     @Override
     @Transactional
-    public UserDto updateUser(String userDtoJson, MultipartFile image) {
-        UserDto userDto = userServiceHelper.extractUserDtoFromJson(userDtoJson);
-
+    public UserDto updateUser(UserDto userDto, MultipartFile image) {
         log.info("Update user with email: {}", userDto.getEmail());
 
         User updatedUser = userServiceHelper.updateUser(image, userDto);

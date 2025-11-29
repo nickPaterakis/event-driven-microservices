@@ -9,5 +9,5 @@ public interface UserService {
 
     UserDto createUser(UserDto userDto);
 
-    UserDto updateUser(String userDto, MultipartFile image);
+    UserDto updateUser(UserDto userDto, MultipartFile image);
 }
